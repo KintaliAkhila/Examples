@@ -1,0 +1,95 @@
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2    V_BONUS V_SAL%TYPE;
+  3    V_SAL STAFF_MASTER.STAFF_SAL%TYPE;
+  4  BEGIN
+  5    SELECT STAFF_SAL INTO V_SAL
+  6    FROM STAFF_MASTER
+  7    WHERE MGR_CODE=100006;
+  8    V_BONUS:=2*V_SAL;
+  9    DBMS_OUTPUT.PUT_LINE('STAFF SALARY IS ' || V_SAL);
+ 10    DBMS_OUTPUT.PUT_LINE('STAFF BONUS IS ' || V_BONUS);
+ 11  EXCEPTION
+ 12    WHEN NO_DATA_FOUND THEN
+ 13    DBMS_OUTPUT.PUT_LINE('GIVEN CODE IS NOT VALID.ENTER VALID CODE');
+ 14* END;
+SQL> /
+  V_BONUS V_SAL%TYPE;
+          *
+ERROR at line 2:
+ORA-06550: line 2, column 11: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 2, column 11: 
+PL/SQL: Item ignored 
+ORA-06550: line 8, column 3: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 8, column 3: 
+PL/SQL: Statement ignored 
+ORA-06550: line 10, column 45: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 10, column 3: 
+PL/SQL: Statement ignored 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2       V_BONUS STAFF_MASTER.STAFF_SAL%TYPE;
+  3       V_SAL STAFF_MASTER.STAFF_SAL%TYPE;
+  4  BEGIN
+  5      FOR C IN (SELECT STAFF_SAL INTO V_SAL
+  6      FROM STAFF_MASTER
+  7      WHERE MGR_CODE=100006)
+  8      LOOP
+  9         V_SAL:=C.STAFF_SAL;
+ 10      END LOOP;
+ 11         V_BONUS:=2*V_SAL;
+ 12         DBMS_OUTPUT.PUT_LINE('STAFF SALARY IS ' || V_SAL);
+ 13         DBMS_OUTPUT.PUT_LINE('STAFF BONUS IS ' || V_BONUS);
+ 14  EXCEPTION
+ 15       WHEN NO_DATA_FOUND THEN
+ 16       DBMS_OUTPUT.PUT_LINE('GIVEN CODE IS NOT VALID.ENTER VALID CODE');
+ 17* END;
+SQL> /
+STAFF SALARY IS 22000                                                           
+STAFF BONUS IS 44000                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off;
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   DECLARE
+  2                    COMMISSION EMP.COMM%TYPE;
+  3                    EXP EXCEPTION;
+  4                    NO EMP.EMPNO%TYPE;
+  5            BEGIN
+  6                NO:='&EMPNO';
+  7                SELECT COMM INTO COMMISSION
+  8                 FROM EMP WHERE EMPNO=NO;
+  9                 IF COMMISSION IS NULL
+ 10                  THEN
+ 11           RAISE EXP;
+ 12                 ELSE
+ 13                 DBMS_OUTPUT.PUT_LINE(COMMISSION);
+ 14  END IF;
+ 15             EXCEPTION
+ 16                  WHEN EXP THEN
+ 17                              DBMS_OUTPUT.PUT_LINE('COMMISSION IS NULL');
+ 18*  END;
+SQL> /
+Enter value for empno: 7369
+old   6:               NO:='&EMPNO';
+new   6:               NO:='7369';
+COMMISSION IS NULL
+
+PL/SQL procedure successfully completed.
+

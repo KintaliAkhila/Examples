@@ -1,0 +1,203 @@
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE OR REPLACE FUNCTION sf_age(
+  2          p_date emp.hiredate%type)RETURN number AS age number;
+  3       BEGIN
+  4          FOR A IN(select (ROUND(months_between(sysdate,p_date)/12))AS B into age from emp)
+  5     	LOOP
+  6     		AGE:=A.B;
+  7     	END LOOP;
+  8          return age;
+  9*      END;
+SQL> /
+
+Function created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  declare
+  2     v_date date:=&v_date;
+  3     v_funcal number;
+  4     begin
+  5     v_funcal:=sf_age(v_date);
+  6     dbms_output.put_line(v_funcal);
+  7*   end;
+SQL> /
+Enter value for v_date: '04-MAR-1999'
+old   2:    v_date date:=&v_date;
+new   2:    v_date date:='04-MAR-1999';
+20                                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1     CREATE OR REPLACE PROCEDURE STAFF_D
+  2         AS
+  3         STAFF_COD STAFF_MASTER.STAFF_CODE%TYPE;
+  4         STAFF_NAM STAFF_MASTER.STAFF_NAME%TYPE;
+  5         DEPT_COD STAFF_MASTER.DEPT_CODE%TYPE;
+  6         MGR_NAME STAFF_MASTER.STAFF_NAME%TYPE;
+  7         MGR_CO STAFF_MASTER.STAFF_CODE%TYPE;
+  8        BEGIN
+  9         FOR A_Q IN (SELECT A.STAFF_CODE,A.STAFF_NAME,A.DEPT_CODE,B.STAFF_NAME AS MGR_CO
+ 10                    FROM STAFF_MASTER A,STAFF_MASTER B
+ 11                    WHERE B.STAFF_CODE=A.MGR_CODE ORDER BY A.STAFF_CODE)
+ 12         LOOP
+ 13           STAFF_COD:=A_Q.STAFF_CODE;
+ 14            STAFF_NAM:=A_Q.STAFF_NAME;
+ 15            DEPT_COD:=A_Q.DEPT_CODE;
+ 16           MGR_NAME:=A_Q.MGR_CO;
+ 17            DBMS_OUTPUT.PUT_LINE('STAFF NAME IS '||STAFF_NAM||' AND MANAGER NAME IS  '||MGR_NAME||' DEPARTMENT CODE IS '||DEPT_COD||' STAFF CODE IS  '||STAFF_COD);
+ 18     	END LOOP;
+ 19*      END;
+SQL> /
+
+Procedure created.
+
+SQL> EXECUTE STAFF_D;
+STAFF NAME IS Arvind AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 30 STAFF CODE
+IS  100001                                                                      
+STAFF NAME IS Shyam AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 20 STAFF CODE 
+IS  100002                                                                      
+STAFF NAME IS Mohan AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 10 STAFF CODE 
+IS  100003                                                                      
+STAFF NAME IS Anil AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 20 STAFF CODE  
+IS  100004                                                                      
+STAFF NAME IS John AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 10 STAFF CODE  
+IS  100005                                                                      
+STAFF NAME IS Allen AND MANAGER NAME IS  John DEPARTMENT CODE IS 30 STAFF CODE  
+IS  100006                                                                      
+STAFF NAME IS Smith AND MANAGER NAME IS  John DEPARTMENT CODE IS 20 STAFF CODE  
+IS  100007                                                                      
+STAFF NAME IS Raviraj AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 40 STAFF    
+CODE IS  100008                                                                 
+STAFF NAME IS Rahul AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 20 STAFF CODE 
+IS  100009                                                                      
+STAFF NAME IS Ram AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 30 STAFF CODE IS
+100010                                                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE OR REPLACE FUNCTION SAL_DATA(
+  2        STAFF_C IN NUMBER,SAL OUT NUMBER
+  3        )RETURN NUMBER
+  4        IS
+  5        S_C STAFF_MASTER.STAFF_CODE%TYPE;
+  6        S_S STAFF_MASTER.STAFF_SAL%TYPE;
+  7        H_DATE STAFF_MASTER.HIREDATE%TYPE;
+  8     BEGIN
+  9        FOR A IN(SELECT STAFF_CODE,STAFF_SAL,HIREDATE
+ 10        INTO S_C,S_S,H_DATE
+ 11        FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+ 12        LOOP
+ 13                S_C:=A.STAFF_CODE;
+ 14                S_S:=A.STAFF_SAL;
+ 15                H_DATE:=A.HIREDATE;
+ 16        END LOOP;
+ 17        IF ((SYSDATE-H_DATE)/365.242199 <16) THEN
+ 18                S_S:=(1.53*S_S);
+ 19  		RETURN S_S;
+ 20        ELSIF(((SYSDATE-H_DATE)/365.242199)<17.5 AND ((SYSDATE-H_DATE)/365.242199)>=16)THEN
+ 21                S_S:=(1.63*S_S);
+ 22  		RETURN S_S;
+ 23        ELSIF(((SYSDATE-H_DATE)/365.242199)<18 AND ((SYSDATE-H_DATE)/365.242199)>=17.5)THEN
+ 24                S_S:=(1.73*S_S);
+ 25  		RETURN S_S;
+ 26        ELSE
+ 27                S_S:=(1.73*S_S);
+ 28  		RETURN S_S;
+ 29        END IF;
+ 30  	DBMS_OUTPUT.PUT_LINE(S_S);
+ 31*   END;
+SQL> /
+Enter value for staff_code: 100007
+old  11:       FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+new  11:       FROM STAFF_MASTER WHERE STAFF_CODE=100007)
+
+Function created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2  STAFF_C STAFF_MASTER.STAFF_CODE%TYPE;
+  3  SAL STAFF_MASTER.STAFF_SAL%TYPE;
+  4  BEGIN
+  5  	FOR X IN(SELECT STAFF_CODE,STAFF_SAL INTO STAFF_C,SAL FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+  6  	LOOP
+  7  		STAFF_C:=X.STAFF_CODE;
+  8  		SAL:=X.STAFF_SAL;
+  9  		DBMS_OUTPUT.PUT_LINE('FINAL COMPANY COST IS  '||SAL_DATA(STAFF_C,SAL));
+ 10  	END LOOP;
+ 11* END;
+SQL> /
+Enter value for staff_code: 100006
+old   5: 	FOR X IN(SELECT STAFF_CODE,STAFF_SAL INTO STAFF_C,SAL FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+new   5: 	FOR X IN(SELECT STAFF_CODE,STAFF_SAL INTO STAFF_C,SAL FROM STAFF_MASTER WHERE STAFF_CODE=100006)
+FINAL COMPANY COST IS  94860                                                    
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE OR REPLACE PROCEDURE UPD_SAL
+  2        AS
+  3        STAFF_C STAFF_MASTER.STAFF_CODE%TYPE;
+  4        HIRE_D STAFF_MASTER.HIREDATE%TYPE;
+  5        SAL STAFF_MASTER.STAFF_SAL%TYPE;
+  6        BEGIN
+  7        	FOR INFO IN(SELECT STAFF_CODE,STAFF_SAL,HIREDATE  INTO STAFF_C,SAL,HIRE_D
+  8        			FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+  9        	LOOP
+ 10        	STAFF_C:=INFO.STAFF_CODE;
+ 11        	HIRE_D:=INFO.HIREDATE;
+ 12     	SAL:=INFO.STAFF_SAL;
+ 13        	DBMS_OUTPUT.PUT_LINE(HIRE_D);
+ 14        	IF(((SYSDATE-HIRE_D)/365.242199)<16)THEN
+ 15       		DBMS_OUTPUT.PUT_LINE('SALARY OF STAFF IS  '||SAL);
+ 16        	ELSIF(((SYSDATE-HIRE_D)/365.242199)>=16 AND ((SYSDATE-HIRE_D)/365.242199)<17.5)THEN
+ 17     		SAL:=SAL+SAL*0.2;
+ 18        		DBMS_OUTPUT.PUT_LINE('SALARY OF STAFF IS  '||SAL);
+ 19        	ELSIF(((SYSDATE-HIRE_D)/365.242199)>=17.5 AND ((SYSDATE-HIRE_D)/365.242199)<20)THEN
+ 20     		SAL:=SAL+SAL*0.25;
+ 21        		DBMS_OUTPUT.PUT_LINE('SALARY OF STAFF IS  '||SAL);
+ 22        	ELSE 
+ 23       		DBMS_OUTPUT.PUT_LINE('STAFF NOT ELIGIBLE FOR HIKE');
+ 24        	END IF;
+ 25           	END LOOP;
+ 26*     END;
+SQL> /
+Enter value for staff_code: 100006
+old   8:       			FROM STAFF_MASTER WHERE STAFF_CODE=&STAFF_CODE)
+new   8:       			FROM STAFF_MASTER WHERE STAFF_CODE=100006)
+
+Procedure created.
+
+SQL> EXEC UPD_SAL;
+23-APR-01                                                                       
+SALARY OF STAFF IS  52500                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;
+
+
+
+
+

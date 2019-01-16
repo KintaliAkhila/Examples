@@ -1,0 +1,203 @@
+CREATE OR REPLACE TRIGGER display_salary_changes 
+BEFORE DELETE OR INSERT OR UPDATE ON customers 
+FOR EACH ROW 
+WHEN (NEW.ID > 0) 
+DECLARE 
+   sal_diff number; 
+BEGIN 
+   sal_diff := :NEW.salary  - :OLD.salary; 
+   dbms_output.put_line('Old salary: ' || :OLD.salary); 
+   dbms_output.put_line('New salary: ' || :NEW.salary); 
+   dbms_output.put_line('Salary difference: ' || sal_diff); 
+END; 
+
+
+
+
+DECLARE 
+   c_id customers.id%type := 8; 
+   c_name customerS.Name%type; 
+   c_addr customers.address%type; 
+BEGIN 
+   SELECT  name, address INTO  c_name, c_addr 
+   FROM customers 
+   WHERE id = c_id;  
+   DBMS_OUTPUT.PUT_LINE ('Name: '||  c_name); 
+   DBMS_OUTPUT.PUT_LINE ('Address: ' || c_addr); 
+
+EXCEPTION 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such customer!'); 
+   WHEN others THEN 
+      dbms_output.put_line('Error!'); 
+END; 
+/
+
+
+
+
+DECLARE 
+   type namesarray IS VARRAY(5) OF VARCHAR2(10); 
+   type grades IS VARRAY(5) OF INTEGER; 
+   names namesarray; 
+   marks grades; 
+   total integer; 
+BEGIN 
+   names := namesarray('Kavita', 'Pritam', 'Ayan', 'Rishav', 'Aziz'); 
+   marks:= grades(98, 97, 78, 87, 92); 
+   total := names.count; 
+   dbms_output.put_line('Total '|| total || ' Students'); 
+   FOR i in 1 .. total LOOP 
+      dbms_output.put_line('Student: ' || names(i) || ' 
+      Marks: ' || marks(i)); 
+   END LOOP; 
+END; 
+/
+
+
+
+
+DECLARE 
+   name varchar2(20); 
+   company varchar2(30); 
+   introduction clob; 
+   choice char(1); 
+BEGIN 
+   name := 'John Smith'; 
+   company := 'Infotech'; 
+   introduction := ' Hello! I''m John Smith from Infotech.'; 
+   choice := 'y'; 
+   IF choice = 'y' THEN 
+      dbms_output.put_line(name); 
+      dbms_output.put_line(company); 
+      dbms_output.put_line(introduction); 
+   END IF; 
+END; 
+/
+
+
+
+
+
+DECLARE 
+   i number(1); 
+   j number(1); 
+BEGIN 
+   << outer_loop >> 
+   FOR i IN 1..3 LOOP 
+      << inner_loop >> 
+      FOR j IN 1..3 LOOP 
+         dbms_output.put_line('i is: '|| i || ' and j is: ' || j); 
+      END loop inner_loop; 
+   END loop outer_loop; 
+END; 
+/
+
+
+
+
+CREATE OR REPLACE FUNCTION totalCustomers 
+RETURN number IS 
+   total number(2) := 0; 
+BEGIN 
+   SELECT count(*) into total 
+   FROM customers; 
+    
+   RETURN total; 
+END; 
+/ 
+
+
+
+DECLARE 
+   c number(2); 
+BEGIN 
+   c := totalCustomers(); 
+   dbms_output.put_line('Total no. of Customers: ' || c); 
+END; 
+/
+
+
+
+ALTER TABLE table_name
+ADD column_name datatype;
+
+
+ALTER TABLE table_name
+MODIFY column_name datatype;
+
+
+
+ALTER TABLE Persons
+MODIFY Age int NOT NULL;
+
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+
+
+
+ALTER TABLE Persons
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+
+
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
+
+
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL PRIMARY KEY,
+    OrderNumber int NOT NULL,
+    PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+);
+
+
+
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2, ...);
+
+
+
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+YEAR - format YYYY or YY
+
+
+CREATE VIEW [Brazil Customers] AS
+SELECT CustomerName, ContactName
+FROM Customers
+WHERE Country = "Brazil";
+
+
+
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="note">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="to" type="xs:string"/>
+      <xs:element name="from" type="xs:string"/>
+      <xs:element name="heading" type="xs:string"/>
+      <xs:element name="body" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

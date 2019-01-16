@@ -1,0 +1,144 @@
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2  V_Sample1 NUMBER(2);
+  3  V_Sample2 CONSTANT NUMBER(2) ;
+  4  V_Sample3 NUMBER(2) NOT NULL ;
+  5  V_Sample4 NUMBER(2) := 50;
+  6  V_Sample5 NUMBER(2) DEFAULT 25;
+  7  BEGIN
+  8  DBMS_OUTPUT.PUT_LINE(V_Sample1);
+  9  DBMS_OUTPUT.PUT_LINE(V_Sample2);
+ 10  DBMS_OUTPUT.PUT_LINE(V_Sample3);
+ 11  DBMS_OUTPUT.PUT_LINE(V_Sample4);
+ 12  DBMS_OUTPUT.PUT_LINE(V_Sample5);
+ 13* END;
+ 14  /
+V_Sample2 CONSTANT NUMBER(2) ;
+*
+ERROR at line 3:
+ORA-06550: line 3, column 1: 
+PLS-00322: declaration of a constant 'V_SAMPLE2' must contain an initialization assignment 
+ORA-06550: line 3, column 11: 
+PL/SQL: Item ignored 
+ORA-06550: line 4, column 11: 
+PLS-00218: a variable declared NOT NULL must have an initialization assignment 
+
+
+SQL> spool off;
+
+SQL> set serveroutput on
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE --outer block
+  2  var_num1 NUMBER := 5;
+  3  BEGIN
+  4  DECLARE --inner block
+  5  --var_num1 NUMBER := 10;
+  6  BEGIN
+  7  DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+  8  --Can outer block variable (var_num1) be printed here.IfYes,Print the same.
+  9  END;
+ 10  DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+ 11  --Can inner block variable(var_num1) be printed here.IfYes,Print the same.
+ 12* END;
+ 13  /
+Value for var_num1:5                                                                                                                                                                                                                                                                                                                                          
+Value for var_num1:5                                                                                                                                                                                                                                                                                                                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE --outer block
+  2  --var_num1 NUMBER := 5;
+  3  BEGIN
+  4  DECLARE --inner block
+  5  var_num1 NUMBER := 10;
+  6  BEGIN
+  7  DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+  8  --Can outer block variable (var_num1) be printed here.IfYes,Print the same.
+  9  END;
+ 10  DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+ 11  --Can inner block variable(var_num1) be printed here.IfYes,Print the same.
+ 12* END;
+ 13  /
+DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+                                             *
+ERROR at line 10:
+ORA-06550: line 10, column 46: 
+PLS-00201: identifier 'VAR_NUM1' must be declared 
+ORA-06550: line 10, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE --outer block
+  2  --var_num1 NUMBER := 5;
+  3  BEGIN
+  4  DECLARE --inner block
+  5  var_num1 NUMBER := 10;
+  6  BEGIN
+  7  DBMS_OUTPUT.PUT_LINE('Value for var_num1:' ||var_num1);
+  8  --Can outer block variable (var_num1) be printed here.IfYes,Print the same.
+  9  END;
+ 10  --Can inner block variable(var_num1) be printed here.IfYes,Print the same.
+ 11* END;
+ 12  /
+Value for var_num1:10                                                                                                                                                                                                                                                                                                                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2  e_empno emp.empno%type :=7369;
+  3  e_ename emp.ename%type;
+  4  e_job emp.job%type;
+  5  e_mgr emp.mgr%type;
+  6  e_hiredate emp.hiredate%type;
+  7  e_sal emp.sal%type;
+  8  e_comm emp.comm%type;
+  9  e_deptno emp.deptno%type;
+ 10  BEGIN
+ 11  SELECT empno,ename,job,mgr,hiredate,sal,comm,deptno INTO e_empno,e_ename,e_job,e_mgr,e_hiredate,e_sal,e_comm,e_deptno
+ 12  FROM emp
+ 13  WHERE empno=e_empno;
+ 14  DBMS_OUTPUT.PUT_LINE('  employee number ' ||  e_empno  ||  '  employee name '  ||  e_ename  ||  '  job '  ||  e_job   ||  '  manager '  ||  e_mgr  ||  '  hiredate '  ||  e_hiredate  ||  '  salary '  ||  e_sal  ||  '  commission '  ||  e_comm  ||  '  department number '  || e_deptno);  
+ 15* END;
+SQL> /
+employee number 7369  employee name SMITH  job CLERK  manager 7902  hiredate 17-DEC-80  salary 800  commission   department number 20                                                                                                                                                                                                                         
+
+PL/SQL procedure successfully completed.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1   DECLARE
+  2      e_empno emp.empno%type;
+  3      e_ename emp.ename%type;
+  4      e_job emp.job%type;
+  5      e_mgr emp.mgr%type;
+  6      e_hiredate emp.hiredate%type;
+  7      e_sal emp.sal%type;
+  8      e_comm emp.comm%type;
+  9      e_deptno emp.deptno%type;
+ 10  BEGIN
+ 11     SELECT * INTO e_empno,e_ename,e_job,e_mgr,e_hiredate,e_sal,e_comm,e_deptno 
+ 12     FROM emp
+ 13     WHERE empno=7369;
+ 14     dbms_output.put_line('  empno '|| e_empno||'  ename '||e_ename||'  job '||e_job||'  mgr '||e_mgr||'  hiredate '|| e_hiredate||'  sal '||e_sal||'  comm '||e_comm||'  deptno '||e_deptno);
+ 15* END;
+ 16  /
+empno 7369  ename SMITH  job CLERK  mgr 7902  hiredate 17-DEC-80  sal 800  comm 
+deptno 20                                                                       
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off;

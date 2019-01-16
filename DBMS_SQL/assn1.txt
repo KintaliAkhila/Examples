@@ -1,0 +1,52 @@
+SQL> SELECT staff_name AS name,Design_code AS designation FROM staff_master WHERE staff_sal BETWEEN 12000 AND 25000 AND hiredate<='01-jan-03';
+
+NAME                                               DESIGNATION                                                                                                                                                                                                                                              
+-------------------------------------------------- -----------                                                                                                                                                                                                                                              
+Shyam                                                      102                                                                                                                                                                                                                                              
+Mohan                                                      102                                                                                                                                                                                                                                              
+Anil                                                       102                                                                                                                                                                                                                                              
+
+SQL> SELECT staff_code, staff_name, dept_code FROM
+  2     staff_master WHERE ((sysdate-hiredate)/12)>=18
+  3     ORDER BY hiredate;
+
+STAFF_CODE STAFF_NAME                                          DEPT_CODE                                                                                                                                                                                                                                    
+---------- -------------------------------------------------- ----------                                                                                                                                                                                                                                    
+    100005 John                                                       10                                                                                                                                                                                                                                    
+    100004 Anil                                                       20                                                                                                                                                                                                                                    
+    100006 Allen                                                      30                                                                                                                                                                                                                                    
+    100010 Ram                                                        30                                                                                                                                                                                                                                    
+    100003 Mohan                                                      10                                                                                                                                                                                                                                    
+    100002 Shyam                                                      20                                                                                                                                                                                                                                    
+    100007 Smith                                                      20                                                                                                                                                                                                                                    
+    100008 Raviraj                                                    40                                                                                                                                                                                                                                    
+    100001 Arvind                                                     30                                                                                                                                                                                                                                    
+    100009 Rahul                                                      20                                                                                                                                                                                                                                    
+
+10 rows selected.
+
+SQL> SELECT staff_code, staff_name, dept_code FROM staff_master WHERE ((sysdate-hiredate)/365)>=18 ORDER BY hiredate;
+
+no rows selected
+
+SQL> SELECT * FROM staff_master WHERE mgr_code= NULL;
+
+no rows selected
+
+SQL> SELECT * FROM book_master WHERE book_pub_year BETWEEN 2001 AND 2004;
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR BOOK_PUB_AUTHOR                                                                                                                                                                                                                 
+---------- -------------------------------------------------- ------------- --------------------------------------------------                                                                                                                                                                              
+  10000003 JAVA Complete Reference                                     2004 H.Schild                                                                                                                                                                                                                        
+  10000007 Intoduction To Algorithams                                  2001 Cormen                                                                                                                                                                                                                          
+  10000009 Introduction to O/S                                         2001 Millan                                                                                                                                                                                                                          
+
+SQL> SELECT * FROM book_master WHERE book_name LIKE '%&%';
+
+no rows selected
+
+SQL> SELECT staff_name FROM staff_master WHERE staff_name='\_';
+
+no rows selected
+
+SQL> spool off;

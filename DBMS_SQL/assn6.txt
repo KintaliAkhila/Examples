@@ -1,0 +1,120 @@
+SQL> INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: 6000
+Enter value for customername: John
+Enter value for address1: #115 Chicago
+Enter value for address2: #115 Chicago
+Enter value for gender: M
+Enter value for age: 25
+Enter value for phoneno: 7878776
+Enter value for sal: 10000
+old   1: INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(6000,'John','#115 Chicago','#115 Chicago','M',25,7878776,10000)
+
+1 row created.
+
+SQL> /
+Enter value for customerid: 6001
+Enter value for customername: Jack
+Enter value for address1: #116 France
+Enter value for address2: #116 France
+Enter value for gender: M
+Enter value for age: 25
+Enter value for phoneno: 434524
+Enter value for sal: 20000
+old   1: INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(6001,'Jack','#116 France','#116 France','M',25,434524,20000)
+
+1 row created.
+
+SQL> /
+Enter value for customerid: 6002
+Enter value for customername: James
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+Enter value for sal: 15000.50
+old   1: INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(6002,'James','#114 New York','#114 New York','M',45,431525,15000.50)
+
+1 row created.SQL> SAVEPOINT sp1;
+
+Savepoint created.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: 6003
+Enter value for customername: John
+Enter value for address1: #114 Chicago
+Enter value for address2: #114 Chicago
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 439525
+Enter value for sal: 19000.60
+old   1: INSERT INTO cust_table VALUES(&customerid,'&customername','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(6003,'John','#114 Chicago','#114 Chicago','M',45,439525,19000.60)
+
+1 row created.
+
+SQL> ROLLBACK TO sp1;
+
+Rollback complete.
+                                                                               
+SQL> SET LINESIZE 350;
+SQL> SET PAGESIZE 350;
+SQL> SELECT * FROM cust_table;
+
+CUSTOMERID CUSTOMERNAME                   ADDRESS1                       ADDRESS2                       G        AGE    PHONENO        SAL                                                                                                                                                                                                                    
+---------- ------------------------------ ------------------------------ ------------------------------ - ---------- ---------- ----------                                                                                                                                                                                                                    
+      6000 John                           #115 Chicago                   #115 Chicago                   M         25    7878776      10000                                                                                                                                                                                                                    
+      6001 Jack                           #116 France                    #116 France                    M         25     434524      20000                                                                                                                                                                                                                    
+      6002 James                          #114 New York                  #114 New York                  M         45     431525      15001                                                                                                                                                                                                                    
+
+SQL> spool off;
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+
+function setCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user=getCookie("username");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+       user = prompt("Please enter your name:","");
+       if (user != "" && user != null) {
+           setCookie("username", user, 30);
+       }
+    }
+}
+
+</script>
+</head>
+<body onload="checkCookie()">
+</body>
+</html>

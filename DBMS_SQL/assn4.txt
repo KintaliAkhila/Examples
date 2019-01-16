@@ -1,0 +1,595 @@
+SQL> CREATE TABLE customer(customerid NUMBER(5), cust_name VARCHAR2(20), address1 VARCHAR2(30), address2 VARCHAR2(30));
+
+Table created.
+
+SQL> ALTER TABLE customer RENAME cust_name TO customername;
+ALTER TABLE customer RENAME cust_name TO customername
+                            *
+ERROR at line 1:
+ORA-14155: missing PARTITION or SUBPARTITION keyword 
+
+
+SQL> ALTER TABLE customer RENAME column cust_name TO customername;
+
+Table altered.
+
+SQL> ALTER TABLE customer MODIFY customername VARCHAR2(30) NOT NULL;
+
+Table altered.
+
+SQL> ALTER TABLE customer ADD COLUMN gender VARCHAR2(1);
+ALTER TABLE customer ADD COLUMN gender VARCHAR2(1)
+                         *
+ERROR at line 1:
+ORA-00904: : invalid identifier 
+
+
+SQL> ALTER TABLE customer ADD gender VARCHAR2(1);
+
+Table altered.
+
+SQL> ALTER TABLE customer ADD age NUMBER(3);
+
+Table altered.
+
+SQL> ALTER TABLE customer ADD phoneno NUMBER(10);
+
+Table altered.
+
+SQL> RENAME customer TO cust_table;
+
+Table renamed.
+
+SQL> INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1000
+Enter value for cust_name: allen
+Enter value for address1: #115 Chicago
+Enter value for address2: #115 Chicago
+Enter value for gender: M
+Enter value for age: 25
+Enter value for phoneno: 7878776
+old   1: INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table(1000,'allen','#115 Chicago','#115 Chicago','M',25,7878776)
+INSERT INTO cust_table(1000,'allen','#115 Chicago','#115 Chicago','M',25,7878776)
+                       *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1000
+Enter value for cust_name: allen
+Enter value for address1: #115 chicago
+Enter value for address2: #115 chicago
+Enter value for gender: M
+Enter value for age: 25
+Enter value for phoneno: 7878776
+old   1: INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table(1000,'allen','#115 chicago','#115 chicago','M',25,7878776)
+INSERT INTO cust_table(1000,'allen','#115 chicago','#115 chicago','M',25,7878776)
+                       *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO cust_table(1000,'allen','#115 chcago','#115 chicago','M',25,7878776);
+INSERT INTO cust_table(1000,'allen','#115 chcago','#115 chicago','M',25,7878776)
+                       *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO cust_table(1000, 'allen', '#115 chcago', '#115 chicago', 'M', 25, 7878776);
+INSERT INTO cust_table(1000, 'allen', '#115 chcago', '#115 chicago', 'M', 25, 7878776)
+                       *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO cust_table values(1000, 'allen', '#115 chcago', '#115 chicago', 'M', 25, 7878776);
+
+1 row created.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1001
+Enter value for cust_name: George
+Enter value for address1: #116 France
+Enter value for address2: #116 France
+Enter value for gender: M
+Enter value for age: 25
+Enter value for phoneno: 434524
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1001,'George','#116 France','#116 France','M',25,434524)
+
+1 row created.
+
+SQL> INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+old   1: INSERT INTO cust_table(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+INSERT INTO cust_table(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+                       *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword 
+
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: M
+Enter value for gender: 
+Enter value for age: 
+Enter value for phoneno: 
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','M','',,)
+INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','M','',,)
+                                                                   *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> 
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+
+1 row created.
+
+SQL> ALTER TABLE cust_table ADD constraints custid_prim PRIMARY KEY(customerid);
+
+Table altered.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: John
+Enter value for address1: #114 Chicago
+Enter value for address2: #114 Chicago
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 439525
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'John','#114 Chicago','#114 Chicago','M',45,439525)
+INSERT INTO cust_table VALUES(1002,'John','#114 Chicago','#114 Chicago','M',45,439525)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.CUSTID_PRIM) violated 
+
+
+SQL> ALTER TABLE cust_table DROP  PRIMARY KEY custid_prim;
+ALTER TABLE cust_table DROP  PRIMARY KEY custid_prim
+                                         *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> ALTER TABLE cust_table DISABLE PRIMARY KEY custid_prim;
+ALTER TABLE cust_table DISABLE PRIMARY KEY custid_prim
+                                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> ALTER TABLE cust_table DISABLE CONSTRAINT custid_prim;
+
+Table altered.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+
+1 row created.
+
+SQL> ALTER TABLE cust_n
+  2  
+SQL> ALTER TABLE cust_table ENABLE CONSTRAINT custid_prim;
+ALTER TABLE cust_table ENABLE CONSTRAINT custid_prim
+*
+ERROR at line 1:
+ORA-02437: cannot validate (SYSTEM.CUSTID_PRIM) - primary key violated 
+
+
+SQL> ALTER TABLE cust_table DISABLE CONSTRAINT custid_prim;
+
+Table altered.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+
+1 row created.
+
+SQL> ALTER TABLE cust_table ADD sal NUMBER(20);
+
+Table altered.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for cust_name: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for address1: 
+Enter value for address2: 
+Enter value for gender: 
+Enter value for age: 
+Enter value for phoneno: 
+Enter value for sal: 
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);,'INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);','','','',,,)
+SP2-0552: Bind variable "CUST_NAME" not declared.
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for cust_name: 
+Enter value for address1: 
+Enter value for address2: 
+Enter value for gender: 
+Enter value for age: 
+Enter value for phoneno: 
+Enter value for sal: 
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);,'','','','',,,)
+SP2-0552: Bind variable "SAL" not declared.
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: 1002
+Enter value for cust_name: Becker
+Enter value for address1: #114 New York
+Enter value for address2: #114 New York
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+Enter value for sal: 15000.50
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(1002,'Becker','#114 New York','#114 New York','M',45,431525,15000.50)
+
+1 row created.
+
+SQL> INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal);
+Enter value for customerid: 1003
+Enter value for cust_name: Nanapatekar
+Enter value for address1: #115 India
+Enter value for address2: #115 India
+Enter value for gender: M
+Enter value for age: 45
+Enter value for phoneno: 431525
+Enter value for sal: 20000.50
+old   1: INSERT INTO cust_table VALUES(&customerid,'&cust_name','&address1','&address2','&gender',&age,&phoneno,&sal)
+new   1: INSERT INTO cust_table VALUES(1003,'Nanapatekar','#115 India','#115 India','M',45,431525,20000.50)
+
+1 row created.
+
+SQL> TRUNCATE TABLE cust_table;
+
+Table truncated.
+
+SQL> ALTER TABLE cust_table ADD e_mail VARCHAR2(30);
+
+Table altered.
+
+SQL> ALTER TABLE cust_table DROP COLUMN e_mail;
+
+Table altered.
+
+SQL> CREATE TABLE suppliers AS SELECT(cutomerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno) FROM cust_table;
+CREATE TABLE suppliers AS SELECT(cutomerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno) FROM cust_table
+                                           *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> CREATE TABLE suppliers AS SELECT(customerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno) FROM cust_table;
+CREATE TABLE suppliers AS SELECT(customerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno) FROM cust_table
+                                            *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> CREATE TABLE suppliers AS SELECT customerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno FROM cust_table;
+CREATE TABLE suppliers AS SELECT customerid AS suppid,cust_name AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno FROM cust_table
+                                                      *
+ERROR at line 1:
+ORA-00904: "CUST_NAME": invalid identifier 
+
+
+SQL> CREATE TABLE suppliers AS SELECT customerid AS suppid, cust_name AS sname, address1 AS addr1, address2 AS addr2, phoneno AS contactno FROM cust_table;
+CREATE TABLE suppliers AS SELECT customerid AS suppid, cust_name AS sname, address1 AS addr1, address2 AS addr2, phoneno AS contactno FROM cust_table
+                                                       *
+ERROR at line 1:
+ORA-00904: "CUST_NAME": invalid identifier 
+
+
+SQL> CREATE TABLE suppliers AS SELECT customerid AS suppid,customername AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno FROM cust_table;
+
+Table created.
+
+SQL> DROP TABLE suppliers;
+
+Table dropped.
+
+SQL> CREATE TABLE customermaster(customerid NUMBER(5),customername VARCHAR2(30) NOT NULL,address1 VARCHAR2(30) NOT NULL,address2 VARCHAR2(30),gender VARCHAR2(1),age NUMBER(3),phoneno NUMBER(10),CONSTRAINT custid_pk PRIMARY KEY(customerid));
+
+Table created.
+
+SQL> CREATE TABLE accountsmaster(customerid NUMBER(5),accountnumber NUMBER(10,2),accounttype CHAR(3),ledgerbalance NUMBER(10,2) NOT NULL,CONSTRAINT acc_pk PRIMARY KEY(accountnumber));
+
+Table created.
+
+SQL> CREATE SEQUENCE acc_seq
+  2  START WITH 1
+  3  MINVALUE 1
+  4  INCREMENT BY 1
+  5  MAXVALUE 100
+  6  NOCYCLE;
+
+Sequence created.
+
+SQL> ALTER TABLE accountsmaster ADD CONSTRAINT cust_acc FOREIGN KEY(customerid) REFERENCES customermaster(customerid));
+ALTER TABLE accountsmaster ADD CONSTRAINT cust_acc FOREIGN KEY(customerid) REFERENCES customermaster(customerid))
+                                                                                                                *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> ALTER TABLE accountsmaster ADD CONSTRAINT cust_acc FOREIGN KEY (customerid) REFERENCES customermaster(customerid);
+
+Table altered.
+
+SQL> INSERT INTO customermaster values(1000,'allen','#115 CHicago','M',25,7878776);
+INSERT INTO customermaster values(1000,'allen','#115 CHicago','M',25,7878776)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> INSERT INTO customermaster values(1000,'allen','#115 Chicago','#115 Chicago,'M',25,7878776);
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> INSERT INTO customermaster values(1000,'allen','#115 Chicago','#115 Chicago','M',25,7878776);
+
+1 row created.
+
+SQL> INSERT INTO customermaster values(1001,'George','#116 France','#116 France','M',25,434524);
+
+1 row created.
+
+SQL> INSERT INTO customermaster values(1002,'Becker','#114 New York','#114 New York','M',45,431525);
+
+1 row created.
+
+SQL> ALTER TABLE accountsmaster ADD CONSTRAINT acc_ck CHECK(accounttype='NRI' OR accounttype='IND');
+
+Table altered.
+
+SQL> ALTER TABLE accountsmaster ADD CONSTRAINT balance_check CHECK(minimumbalance>5000);
+ALTER TABLE accountsmaster ADD CONSTRAINT balance_check CHECK(minimumbalance>5000)
+                                                              *
+ERROR at line 1:
+ORA-00904: "MINIMUMBALANCE": invalid identifier 
+
+
+SQL> ALTER TABLE accountsmaster ADD CONSTRAINT balance_check CHECK(ledgerbalance>5000);
+
+Table altered.
+
+SQL> DELETE FROM accountsmaster,customermaster where customerid=1001;
+DELETE FROM accountsmaster,customermaster where customerid=1001
+                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> CREATE TABLE accountdetails AS SELECT * FROM accountsmaster;
+
+Table created.
+
+SQL> CREATE VIEW acc_view AS SELECT customerid AS customercode,customername AS accountholdername,accountnumber,accounttype AS type,ledgerbalance AS balance FROM accountsmaster;
+CREATE VIEW acc_view AS SELECT customerid AS customercode,customername AS accountholdername,accountnumber,accounttype AS type,ledgerbalance AS balance FROM accountsmaster
+                                                          *
+ERROR at line 1:
+ORA-00904: "CUSTOMERNAME": invalid identifier 
+
+
+SQL> CREATE VIEW acc_view AS SELECT customerid AS customercode,accountnumber,accounttype AS type,ledgerbalance AS balance FROM accountsmaster;
+
+View created.
+
+SQL> CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance where accounttype='IND' AND ledgerbalance >10000;
+CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance where accounttype='IND' AND ledgerbalance >10000
+                                                           *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance from accountsmaster where accounttype='IND' AND ledgerbalance >10000;
+
+View created.
+
+SQL> spool off;
+SQL> DROP VIEW vaccs_dtls;
+
+View dropped.
+
+SQL> CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance WHERE accounttype='IND' AND ledgerbalance>10000 WITH CHECK OPTION CONSTRAINT chk_opt;
+CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance WHERE accounttype='IND' AND ledgerbalance>10000 WITH CHECK OPTION CONSTRAINT chk_opt
+                                                           *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> CREATE VIEW vaccs_dtls AS SELECT accounttype,ledgerbalance FROM accountsmaster WHERE accounttype='IND' AND ledgerbalance>10000 WITH CHECK OPTION CONSTRAINT chk_opt;
+
+View created.
+
+SQL> CREATE SEQUENCE seq_dept
+  2  START WITH 40
+  3  MINVALUE 40
+  4  INCREMENT BY 10
+  5  MAXVALUE 200
+  6  NOCYCLE
+  7  ;
+
+Sequence created.
+
+SQL> INSERT INTO department_master VALUES(seq_dept.NEXTVAL,'Computer Science');
+INSERT INTO department_master VALUES(seq_dept.NEXTVAL,'Computer Science')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007004) violated 
+
+SQL> CREATE TABLE departmentmaster(deptno NUMBER(20),deptname VARCHAR2(30));
+
+Table created.
+
+SQL> INSERT INTO department_master VALUES(seq_dept.NEXTVAL,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO departmentmaster VALUES(seq_dept.NEXTVAL,'ECE');
+
+1 row created.
+
+SQL> INSERT INTO departmentmaster VALUES(seq_dept.NEXTVAL,'MECH');
+
+1 row created.
+
+SQL> DROP SEQUENCE seq_dept;
+
+Sequence dropped.
+
+SQL> CREATE INDEX no_table on emp(empno);
+
+Index created.
+
+SQL> CREATE SYNONYM synemp FOR emp;
+
+Synonym created.
+
+SQL> SELECT * FROM synemp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7369 SMITH      CLERK           7902 17-DEC-80        800                 
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300      
+        30                                                                      
+                                                                                
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500      
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7566 JONES      MANAGER         7839 02-APR-81       2975                 
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400      
+        30                                                                      
+                                                                                
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                 
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                 
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000                 
+        20                                                                      
+                                                                                
+      7839 KING       PRESIDENT            17-NOV-81       5000                 
+        10                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0      
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100                 
+        20                                                                      
+                                                                                
+      7900 JAMES      CLERK           7698 03-DEC-81        950                 
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM      
+---------- ---------- --------- ---------- --------- ---------- ----------      
+    DEPTNO                                                                      
+----------                                                                      
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                 
+        20                                                                      
+                                                                                
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                 
+        10                                                                      
+                                                                                
+
+14 rows selected.
+
+
+SQL> CREATE SEQUENCE  seq_emp
+  2  START WITH 1001
+  3  MINVALUE 1000
+  4  INCREMENT BY 1
+  5  NOCYCLE;
+
+Sequence created.
+
+SQL> CREATE VIEW accsvw10 AS SELECT * FROM accountsmaster WITH READ ONLY CONSTRAINT rd_con;
+
+View created.
+
+
+
+SQL> spool off;

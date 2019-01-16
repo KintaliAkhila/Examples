@@ -1,0 +1,368 @@
+SQL> set lines 300;
+SQL> set pagesize 300;
+SQL> SELECT staff_name,lpad(staff_sal,15,'$') FROM staff_master;
+
+STAFF_NAME                                         LPAD(STAFF_SAL,15,'$')                                                                                                                                                                                                                                   
+-------------------------------------------------- ------------------------------------------------------------                                                                                                                                                                                             
+Arvind                                             $$$$$$$$$$17000                                                                                                                                                                                                                                          
+Shyam                                              $$$$$$$$$$20000                                                                                                                                                                                                                                          
+Mohan                                              $$$$$$$$$$24000                                                                                                                                                                                                                                          
+Anil                                               $$$$$$$$$$20000                                                                                                                                                                                                                                          
+John                                               $$$$$$$$$$32000                                                                                                                                                                                                                                          
+Allen                                              $$$$$$$$$$42000                                                                                                                                                                                                                                          
+Smith                                              $$$$$$$$$$62000                                                                                                                                                                                                                                          
+Raviraj                                            $$$$$$$$$$18000                                                                                                                                                                                                                                          
+Rahul                                              $$$$$$$$$$22000                                                                                                                                                                                                                                          
+Ram                                                $$$$$$$$$$32000                                                                                                                                                                                                                                          
+
+10 rows selected.
+
+SQL> SELECT staff_name,lpad(staff_sal,15,'$') AS salary FROM staff_master;
+
+STAFF_NAME                                         SALARY                                                                                                                                                                                                                                                   
+-------------------------------------------------- ------------------------------------------------------------                                                                                                                                                                                             
+Arvind                                             $$$$$$$$$$17000                                                                                                                                                                                                                                          
+Shyam                                              $$$$$$$$$$20000                                                                                                                                                                                                                                          
+Mohan                                              $$$$$$$$$$24000                                                                                                                                                                                                                                          
+Anil                                               $$$$$$$$$$20000                                                                                                                                                                                                                                          
+John                                               $$$$$$$$$$32000                                                                                                                                                                                                                                          
+Allen                                              $$$$$$$$$$42000                                                                                                                                                                                                                                          
+Smith                                              $$$$$$$$$$62000                                                                                                                                                                                                                                          
+Raviraj                                            $$$$$$$$$$18000                                                                                                                                                                                                                                          
+Rahul                                              $$$$$$$$$$22000                                                                                                                                                                                                                                          
+Ram                                                $$$$$$$$$$32000                                                                                                                                                                                                                                          
+
+10 rows selected.
+
+SQL> SELECT student_name,to_char(student_dob,'month,day yyyy') AS stu_dob FROM student_master WHERE to_char(student_dob,'d') IN (1,7);
+
+STUDENT_NAME                                       STU_DOB                                                                                                                                                                                                                                                  
+-------------------------------------------------- ------------------------------------------------------------------------------                                                                                                                                                                           
+Ravi                                               november ,sunday    1981                                                                                                                                                                                                                                 
+Raj                                                january  ,sunday    1979                                                                                                                                                                                                                                 
+Arvind                                             january  ,saturday  1983                                                                                                                                                                                                                                 
+Mehul                                              january  ,sunday    1982                                                                                                                                                                                                                                 
+Vijay                                              january  ,saturday  1980                                                                                                                                                                                                                                 
+Rajat                                              january  ,sunday    1980                                                                                                                                                                                                                                 
+Ramesh                                             december ,saturday  1980                                                                                                                                                                                                                                 
+Amit Raj                                           september,sunday    1980                                                                                                                                                                                                                                 
+
+8 rows selected.
+
+SQL> SELECT staff_name,MONTHS_BETWEEN(sysdate,hiredate) AS monthsworked FROM staff_master;
+
+STAFF_NAME                                         MONTHSWORKED                                                                                                                                                                                                                                             
+-------------------------------------------------- ------------                                                                                                                                                                                                                                             
+Arvind                                               190.248809                                                                                                                                                                                                                                             
+Shyam                                                201.184293                                                                                                                                                                                                                                             
+Mohan                                                202.119777                                                                                                                                                                                                                                             
+Anil                                                 212.377841                                                                                                                                                                                                                                             
+John                                                 214.055261                                                                                                                                                                                                                                             
+Allen                                                210.990744                                                                                                                                                                                                                                             
+Smith                                                200.345583                                                                                                                                                                                                                                             
+Raviraj                                              190.377841                                                                                                                                                                                                                                             
+Rahul                                                179.377841                                                                                                                                                                                                                                             
+Ram                                                  202.184293                                                                                                                                                                                                                                             
+
+10 rows selected.
+
+SQL> SELECT staff_name,ROUND(MONTHS_BETWEEN(sysdate,hiredate)) AS monthsworked FROM staff_master;
+
+STAFF_NAME                                         MONTHSWORKED                                                                                                                                                                                                                                             
+-------------------------------------------------- ------------                                                                                                                                                                                                                                             
+Arvind                                                      190                                                                                                                                                                                                                                             
+Shyam                                                       201                                                                                                                                                                                                                                             
+Mohan                                                       202                                                                                                                                                                                                                                             
+Anil                                                        212                                                                                                                                                                                                                                             
+John                                                        214                                                                                                                                                                                                                                             
+Allen                                                       211                                                                                                                                                                                                                                             
+Smith                                                       200                                                                                                                                                                                                                                             
+Raviraj                                                     190                                                                                                                                                                                                                                             
+Rahul                                                       179                                                                                                                                                                                                                                             
+Ram                                                         202                                                                                                                                                                                                                                             
+
+10 rows selected.
+
+SQL> SELECT staff_name,staff_sal,
+  2  CASE WHEN staff_sal>=50000 THEN 'A'
+  3  WHEN staff_sal>=25000 AND <50000 THEN 'B'
+  4  WHEN staff_sal>=10000 AND <25000 THEN 'C'
+  5  ELSE 'D'
+  6  END
+  7  FROM staff_master;
+WHEN staff_sal>=25000 AND <50000 THEN 'B'
+                          *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  SELECT staff_name,staff_sal,
+  2  CASE WHEN staff_sal>=50000 THEN 'A'
+  3  WHEN staff_sal>=25000 AND < 50000 THEN 'B'
+  4  WHEN staff_sal>=10000 AND < 25000 THEN 'C'
+  5  ELSE 'D'
+  6  END
+  7* FROM staff_master
+  8  /
+WHEN staff_sal>=25000 AND < 50000 THEN 'B'
+                          *
+ERROR at line 3:
+ORA-00936: missing expression 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  SELECT staff_name,staff_sal,
+  2  CASE WHEN staff_sal>=50000 THEN 'A'
+  3  WHEN staff_sal>=25000 AND staff_sal<50000 THEN 'B'
+  4  WHEN staff_sal>=10000 AND staff_sal<25000 THEN 'C'
+  5  ELSE 'D'
+  6  END
+  7* FROM staff_master
+  8  /
+
+STAFF_NAME                                          STAFF_SAL C                                                                                                                                                                                                                                             
+-------------------------------------------------- ---------- -                                                                                                                                                                                                                                             
+Arvind                                                  17000 C                                                                                                                                                                                                                                             
+Shyam                                                   20000 C                                                                                                                                                                                                                                             
+Mohan                                                   24000 C                                                                                                                                                                                                                                             
+Anil                                                    20000 C                                                                                                                                                                                                                                             
+John                                                    32000 B                                                                                                                                                                                                                                             
+Allen                                                   42000 B                                                                                                                                                                                                                                             
+Smith                                                   62000 A                                                                                                                                                                                                                                             
+Raviraj                                                 18000 C                                                                                                                                                                                                                                             
+Rahul                                                   22000 C                                                                                                                                                                                                                                             
+Ram                                                     32000 B                                                                                                                                                                                                                                             
+
+10 rows selected.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  SELECT staff_name,staff_sal
+  2  CASE WHEN staff_sal>=50000 THEN 'A'
+  3  WHEN staff_sal>=25000 AND staff_sal<50000 THEN 'B'
+  4  WHEN staff_sal>=10000 AND staff_sal<25000 THEN 'C'
+  5  ELSE 'D'
+  6  END
+  7* FROM staff_master
+  8  /
+CASE WHEN staff_sal>=50000 THEN 'A'
+     *
+ERROR at line 2:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT * FROM staff_master WHERE TO_CHAR(hiredate,'dd') BETWEEN 1 AND 15 AND TO_CHAR(hiredate,'month') LIKE '%december%';
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE  DEPT_CODE STAFF_DOB HIREDATE    MGR_CODE  STAFF_SAL                                                                                                                                                                              
+---------- -------------------------------------------------- ----------- ---------- --------- --------- ---------- ----------                                                                                                                                                                              
+STAFF_ADDRESS                                                                                                                                                                                                                                                                                               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                            
+    100009 Rahul                                                      102         20 16-JAN-78 11-DEC-03     100006      22000                                                                                                                                                                              
+Hyderabad                                                                                                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                                                                                            
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS HireDAte, TO_CHAR(hiredate,'day') AS Day from staff_master ORDER BY TO_CHAR(hiredate,'day') desc;
+SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS HireDAte, TO_CHAR(hiredate,'day') AS Day from staff_master ORDER BY TO_CHAR(hiredate,'day') desc
+                   *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS hire_date, TO_CHAR(hiredate,'day') AS day from staff_master ORDER BY TO_CHAR(hiredate,'day') desc;
+
+STAFF_NAME                                         HIRE_DATE                                    DAY                                                                                                                                                                                                         
+-------------------------------------------------- -------------------------------------------- ------------------------------------                                                                                                                                                                        
+Arvind                                             15 january   2003                            wednesday                                                                                                                                                                                                   
+Smith                                              12 march     2002                            tuesday                                                                                                                                                                                                     
+Ram                                                17 january   2002                            thursday                                                                                                                                                                                                    
+Rahul                                              11 december  2003                            thursday                                                                                                                                                                                                    
+Anil                                               11 march     2001                            sunday                                                                                                                                                                                                      
+Shyam                                              17 february  2002                            sunday                                                                                                                                                                                                      
+John                                               21 january   2001                            sunday                                                                                                                                                                                                      
+Raviraj                                            11 january   2003                            saturday                                                                                                                                                                                                    
+Mohan                                              19 january   2002                            saturday                                                                                                                                                                                                    
+Allen                                              23 april     2001                            monday                                                                                                                                                                                                      
+
+10 rows selected.
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS hire_date, TO_CHAR(hiredate,'day') AS day from staff_master ORDER BY day;
+
+STAFF_NAME                                         HIRE_DATE                                    DAY                                                                                                                                                                                                         
+-------------------------------------------------- -------------------------------------------- ------------------------------------                                                                                                                                                                        
+Allen                                              23 april     2001                            monday                                                                                                                                                                                                      
+Raviraj                                            11 january   2003                            saturday                                                                                                                                                                                                    
+Mohan                                              19 january   2002                            saturday                                                                                                                                                                                                    
+Anil                                               11 march     2001                            sunday                                                                                                                                                                                                      
+Shyam                                              17 february  2002                            sunday                                                                                                                                                                                                      
+John                                               21 january   2001                            sunday                                                                                                                                                                                                      
+Rahul                                              11 december  2003                            thursday                                                                                                                                                                                                    
+Ram                                                17 january   2002                            thursday                                                                                                                                                                                                    
+Smith                                              12 march     2002                            tuesday                                                                                                                                                                                                     
+Arvind                                             15 january   2003                            wednesday                                                                                                                                                                                                   
+
+10 rows selected.
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS hire_date, TO_CHAR(hiredate,'day') AS day from staff_master ORDER BY day desc;
+
+STAFF_NAME                                         HIRE_DATE                                    DAY                                                                                                                                                                                                         
+-------------------------------------------------- -------------------------------------------- ------------------------------------                                                                                                                                                                        
+Arvind                                             15 january   2003                            wednesday                                                                                                                                                                                                   
+Smith                                              12 march     2002                            tuesday                                                                                                                                                                                                     
+Ram                                                17 january   2002                            thursday                                                                                                                                                                                                    
+Rahul                                              11 december  2003                            thursday                                                                                                                                                                                                    
+Anil                                               11 march     2001                            sunday                                                                                                                                                                                                      
+Shyam                                              17 february  2002                            sunday                                                                                                                                                                                                      
+John                                               21 january   2001                            sunday                                                                                                                                                                                                      
+Raviraj                                            11 january   2003                            saturday                                                                                                                                                                                                    
+Mohan                                              19 january   2002                            saturday                                                                                                                                                                                                    
+Allen                                              23 april     2001                            monday                                                                                                                                                                                                      
+
+10 rows selected.
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dd month yyyy') AS hire_date, TO_CHAR(hiredate,'day') AS day from staff_master ORDER BY day asc;
+
+STAFF_NAME                                         HIRE_DATE                                    DAY                                                                                                                                                                                                         
+-------------------------------------------------- -------------------------------------------- ------------------------------------                                                                                                                                                                        
+Allen                                              23 april     2001                            monday                                                                                                                                                                                                      
+Raviraj                                            11 january   2003                            saturday                                                                                                                                                                                                    
+Mohan                                              19 january   2002                            saturday                                                                                                                                                                                                    
+Anil                                               11 march     2001                            sunday                                                                                                                                                                                                      
+Shyam                                              17 february  2002                            sunday                                                                                                                                                                                                      
+John                                               21 january   2001                            sunday                                                                                                                                                                                                      
+Rahul                                              11 december  2003                            thursday                                                                                                                                                                                                    
+Ram                                                17 january   2002                            thursday                                                                                                                                                                                                    
+Smith                                              12 march     2002                            tuesday                                                                                                                                                                                                     
+Arvind                                             15 january   2003                            wednesday                                                                                                                                                                                                   
+
+10 rows selected.
+
+SQL> SELECT staff_name, TO_CHAR(hiredate,'dy month yyyy') AS hire_date, TO_CHAR(hiredate,'d') AS day from staff_master ORDER BY day asc;
+
+STAFF_NAME                                         HIRE_DATE                                              D                                                                                                                                                                                                 
+-------------------------------------------------- ------------------------------------------------------ -                                                                                                                                                                                                 
+John                                               sun january   2001                                     1                                                                                                                                                                                                 
+Anil                                               sun march     2001                                     1                                                                                                                                                                                                 
+Shyam                                              sun february  2002                                     1                                                                                                                                                                                                 
+Allen                                              mon april     2001                                     2                                                                                                                                                                                                 
+Smith                                              tue march     2002                                     3                                                                                                                                                                                                 
+Arvind                                             wed january   2003                                     4                                                                                                                                                                                                 
+Rahul                                              thu december  2003                                     5                                                                                                                                                                                                 
+Ram                                                thu january   2002                                     5                                                                                                                                                                                                 
+Mohan                                              sat january   2002                                     7                                                                                                                                                                                                 
+Raviraj                                            sat january   2003                                     7                                                                                                                                                                                                 
+
+10 rows selected.
+
+SQL> SELECT staff_name,hiredate,mod(TO_CHAR(hiredate,'d')+5,7)+1 AS weekday,TO_CHAR(hiredate,'day') AS day FROM staff_master ORDER BY weekday;
+
+STAFF_NAME                                         HIREDATE     WEEKDAY DAY                                                                                                                                                                                                                                 
+-------------------------------------------------- --------- ---------- ------------------------------------                                                                                                                                                                                                
+Allen                                              23-APR-01          1 monday                                                                                                                                                                                                                              
+Smith                                              12-MAR-02          2 tuesday                                                                                                                                                                                                                             
+Arvind                                             15-JAN-03          3 wednesday                                                                                                                                                                                                                           
+Rahul                                              11-DEC-03          4 thursday                                                                                                                                                                                                                            
+Ram                                                17-JAN-02          4 thursday                                                                                                                                                                                                                            
+Raviraj                                            11-JAN-03          6 saturday                                                                                                                                                                                                                            
+Mohan                                              19-JAN-02          6 saturday                                                                                                                                                                                                                            
+Anil                                               11-MAR-01          7 sunday                                                                                                                                                                                                                              
+Shyam                                              17-FEB-02          7 sunday                                                                                                                                                                                                                              
+John                                               21-JAN-01          7 sunday                                                                                                                                                                                                                              
+
+10 rows selected.
+
+SQL> SELECT INSTR('mississippi','i',1,3) AS occurrence FROM dual;
+
+OCCURRENCE                                                                                                                                                                                                                                                                                                  
+----------                                                                                                                                                                                                                                                                                                  
+         8                                                                                                                                                                                                                                                                                                  
+
+SQL> SELECT TO_CHAR(next_day(last_day(sysdate)-7,'friday'),'ddspth "of" month yyyy') "last_friday" FROM dual;
+
+last_friday                                                                                                                                                                                                                                                                                                 
+-----------------------------------------------------------                                                                                                                                                                                                                                                 
+thirtieth of november  2018                                                                                                                                                                                                                                                                                 
+
+SQL> SELECT student_name,student_code,
+  2  DECODE (dept_code,
+  3  20,'electricals',
+  4  30,'electronics'
+  5  'others') AS department FROM student_master;
+'others') AS department FROM student_master
+*
+ERROR at line 5:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  SELECT student_name,student_code,
+  2  DECODE (dept_code,
+  3  20,'electricals',
+  4  30,'electronics',
+  5* 'others') AS department FROM student_master
+SQL> /
+
+STUDENT_NAME                                       STUDENT_CODE DEPARTMENT                                                                                                                                                                                                                                  
+-------------------------------------------------- ------------ -----------                                                                                                                                                                                                                                 
+Amit                                                       1001 others                                                                                                                                                                                                                                      
+Ravi                                                       1002 others                                                                                                                                                                                                                                      
+Ajay                                                       1003 electricals                                                                                                                                                                                                                                 
+Raj                                                        1004 electronics                                                                                                                                                                                                                                 
+Arvind                                                     1005 others                                                                                                                                                                                                                                      
+Rahul                                                      1006 others                                                                                                                                                                                                                                      
+Mehul                                                      1007 electricals                                                                                                                                                                                                                                 
+Dev                                                        1008 others                                                                                                                                                                                                                                      
+Vijay                                                      1009 electronics                                                                                                                                                                                                                                 
+Rajat                                                      1010 others                                                                                                                                                                                                                                      
+Sunder                                                     1011 others                                                                                                                                                                                                                                      
+Rajesh                                                     1012 electronics                                                                                                                                                                                                                                 
+Anil                                                       1013 electricals                                                                                                                                                                                                                                 
+Sunil                                                      1014 others                                                                                                                                                                                                                                      
+Kapil                                                      1015 others                                                                                                                                                                                                                                      
+Ashok                                                      1016 others                                                                                                                                                                                                                                      
+Ramesh                                                     1017 electronics                                                                                                                                                                                                                                 
+Amit Raj                                                   1018 others                                                                                                                                                                                                                                      
+Ravi Raj                                                   1019 others                                                                                                                                                                                                                                      
+Amrit                                                      1020 others                                                                                                                                                                                                                                      
+Sumit                                                      1021 electricals                                                                                                                                                                                                                                 
+
+21 rows selected.
+
+SQL> SELECT ROUND(MAX(staff_sal)) AS maximum,ROUND(MIN(staff_sal)) AS minimum,ROUND(SUM(staff_sal)) AS total,ROUND(AVG(staff_sal)) AS average FROM staff_master GROUP BY dept_code;
+
+   MAXIMUM    MINIMUM      TOTAL    AVERAGE                                                                                                                                                                                                                                                                 
+---------- ---------- ---------- ----------                                                                                                                                                                                                                                                                 
+     42000      17000      91000      30333                                                                                                                                                                                                                                                                 
+     62000      20000     124000      31000                                                                                                                                                                                                                                                                 
+     18000      18000      18000      18000                                                                                                                                                                                                                                                                 
+     32000      24000      56000      28000                                                                                                                                                                                                                                                                 
+
+SQL> SLECT dept_code,COUNT(mgr_code) AS TOTAL_NO_OF_MANAGERS FROM staff_master;
+SP2-0734: unknown command beginning "SLECT dept..." - rest of line ignored.
+SQL> SELECT dept_code,COUNT(mgr_code) AS TOTAL_NO_OF_MANAGERS FROM staff_master;
+SELECT dept_code,COUNT(mgr_code) AS TOTAL_NO_OF_MANAGERS FROM staff_master
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> SELECT dept_code,COUNT(mgr_code) AS TOTAL_NO_OF_MANAGERS FROM staff_master GROUP BY dept_code;
+
+ DEPT_CODE TOTAL_NO_OF_MANAGERS                                                                                                                                                                                                                                                                             
+---------- --------------------                                                                                                                                                                                                                                                                             
+        30                    3                                                                                                                                                                                                                                                                             
+        20                    4                                                                                                                                                                                                                                                                             
+        40                    1                                                                                                                                                                                                                                                                             
+        10                    2                                                                                                                                                                                                                                                                             
+
+SQL> SELECT deptno,sum(sal) FROM emp WHERE job!='manager' GROUP BY deptno HAVING SUM(sal)>20000;
+
+no rows selected
+
